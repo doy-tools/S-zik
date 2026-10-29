@@ -96,8 +96,15 @@ jobs:
 
           echo "rootProject.name = 'SZikApp'" > android/settings.gradle
           echo "include ':app'" >> android/settings.gradle
-          echo "buildscript { repositories { google(); mavenCentral() }; dependencies { classpath 'com.android.tools.build:gradle:8.2.2' } }" > android/build.gradle
-          echo "allprojects { repositories { google(); mavenCentral() } }" >> android/build.gradle
+          
+          cat << 'EOF' > android/build.gradle
+          buildscript {
+              repositories { google(); mavenCentral() }
+              dependencies { classpath 'com.android.tools.build:gradle:8.2.2' }
+          }
+          allprojects { repositories { google(); mavenCentral() } }
+          EOF
+          
           echo "org.gradle.jvmargs=-Xmx2048m" > android/gradle.properties
           echo "android.useAndroidX=true" >> android/gradle.properties
 

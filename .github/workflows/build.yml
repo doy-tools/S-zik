@@ -20,29 +20,13 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Build APK from HTML
+      - name: Build APK
         run: |
           mkdir -p android/app/src/main/java/com/szik/app
           mkdir -p android/app/src/main/assets
-          mkdir -p android/app/src/main/res/values
-          mkdir -p android/app/src/main/res/mipmap-hdpi
-          mkdir -p android/app/src/main/res/mipmap-mdpi
-          mkdir -p android/app/src/main/res/mipmap-xhdpi
-          mkdir -p android/app/src/main/res/mipmap-xxhdpi
-          mkdir -p android/app/src/main/res/mipmap-xxxhdpi
-
           cp index.html android/app/src/main/assets/
           cp style.css android/app/src/main/assets/
           cp script.js android/app/src/main/assets/
-
-          sudo apt-get install -y wget imagemagick
-          wget -O luffy.png "https://cdn-icons-png.flaticon.com/512/1048/1048953.png"
-          
-          convert luffy.png -resize 48x48 android/app/src/main/res/mipmap-mdpi/ic_launcher.png
-          convert luffy.png -resize 72x72 android/app/src/main/res/mipmap-hdpi/ic_launcher.png
-          convert luffy.png -resize 96x96 android/app/src/main/res/mipmap-xhdpi/ic_launcher.png
-          convert luffy.png -resize 144x144 android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png
-          convert luffy.png -resize 192x192 android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
 
           cat << 'EOF' > android/app/src/main/java/com/szik/app/MainActivity.java
           package com.szik.app;
@@ -52,12 +36,17 @@ jobs:
           import android.webkit.WebView;
           import android.webkit.WebSettings;
           import androidx.appcompat.app.AppCompatActivity;
+
           public class MainActivity extends AppCompatActivity {
               @SuppressLint("SetJavaScriptEnabled")
               @Override
               protected void onCreate(Bundle savedInstanceState) {
                   super.onCreate(savedInstanceState);
-                  getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+                  getWindow().getDecorView().setSystemUiVisibility(
+                      View.SYSTEM_UI_FLAG_FULLSCREEN | 
+                      View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | 
+                      View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                  );
                   WebView webView = new WebView(this);
                   WebSettings settings = webView.getSettings();
                   settings.setJavaScriptEnabled(true);
@@ -74,7 +63,7 @@ jobs:
           <?xml version="1.0" encoding="utf-8"?>
           <manifest xmlns:android="http://schemas.android.com/apk/res/android">
               <uses-permission android:name="android.permission.INTERNET" />
-              <application android:label="S Zik" android:icon="@mipmap/ic_launcher" android:theme="@style/Theme.AppCompat.NoActionBar">
+              <application android:label="S Zik" android:theme="@style/Theme.AppCompat.NoActionBar">
                   <activity android:name=".MainActivity" android:exported="true">
                       <intent-filter>
                           <action android:name="android.intent.action.MAIN" />
@@ -107,10 +96,8 @@ jobs:
 
           echo "rootProject.name = 'SZikApp'" > android/settings.gradle
           echo "include ':app'" >> android/settings.gradle
-          
           echo "buildscript { repositories { google(); mavenCentral() }; dependencies { classpath 'com.android.tools.build:gradle:8.2.2' } }" > android/build.gradle
           echo "allprojects { repositories { google(); mavenCentral() } }" >> android/build.gradle
-          
           echo "org.gradle.jvmargs=-Xmx2048m" > android/gradle.properties
           echo "android.useAndroidX=true" >> android/gradle.properties
 

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Ｓ ＺＩＸ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+  <!-- SIDEBAR -->
+  <div id="sidebar" class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-s" style="width:40px;height:40px;font-size:20px;margin:0;">Ｓ</div>
+      <div>
+        <div style="font-size:16px;font-weight:900;color:#fff;">Menu</div>
+        <div style="font-size:10px;color:#7a9eb8;">S Zik System</div>
+      </div>
+    </div>
+    <div class="sidebar-menu">
+      <div class="sb-item" onclick="openWA('6285881599723','Halo Dev')"><span>💬</span> Chat Dev</div>
+      <div class="sb-item" onclick="showAppInfo()"><span>ℹ️</span> Info APK</div>
+      <div class="sb-item" onclick="openWA('https://whatsapp.com/channel/0029VbE7yLIHAdNVc76b2n19',null,true)"><span>📢</span> Saluran WA</div>
+      <div class="sb-item" onclick="doLogout()" style="color:#ff4757;margin-top:auto;"><span>🚪</span> Log Out</div>
+    </div>
+  </div>
+  <div id="sidebar-backdrop" class="sidebar-backdrop" onclick="closeSidebar()"></div>
+
+  <!-- AUTH SCREEN -->
+  <div id="auth-screen">
+    <div class="bg-text">Ｓ ＺＩＫ</div>
+    <!-- GAMBAR LUFFY -->
+    <img src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png" class="luffy-img" style="border-radius: 50%; object-fit: cover; width: 110px; height: 110px;">
+    
+    <div class="auth-card">
+      <div class="logo-s">Ｓ</div>
+      <div class="auth-toggle">
+        <div class="auth-indicator" id="auth-indicator"></div>
+        <button class="active" id="tab-login" onclick="switchAuth('login')">ＭＡＳＵＫ</button>
+        <button id="tab-register" onclick="switchAuth('register')">ＤＡＦＴＡＲ</button>
+      </div>
+      <div id="form-login" class="auth-form">
+        <input id="login-usr" placeholder="Ｕｓｅｒｎａｍｅ" autocomplete="off">
+        <input id="login-pwd" type="password" placeholder="Ｐａｓｓｗｏｒｄ" autocomplete="off">
+        <button class="btn-primary" onclick="doLogin()">ＭＡＳＵＫ</button>
+        <div class="err" id="login-err"></div>
+      </div>
+      <div id="form-register" class="auth-form" style="display:none;">
+        <input id="reg-usr" placeholder="Ｕｓｅｒｎａｍｅ Ｂａｒｕ">
+        <input id="reg-pwd" type="password" placeholder="Ｐａｓｓｗｏｒｄ">
+        <input id="reg-pwd2" type="password" placeholder="Ｕｌａｎｇｉ">
+        <button class="btn-primary" onclick="doRegister()">ＤＡＦＴＡＲ</button>
+        <div class="err" id="reg-err"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN APP -->
+  <div id="main">
+    <div class="topbar-blue">
+      <div class="menu-btn" onclick="openSidebar()"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></div>
+      <div class="sys-hub"><span class="dot"></span> ＳＹＳＴＥＭ</div>
+      <div class="user-badge" id="user-badge">ＧＵＥＳＴ</div>
+    </div>
+
+    <div id="view-container">
+      <div id="home-view">
+        <div class="header-title"><h1>ＭＥＮＵ ＵＴＡＭＡ <span>· Ｓ ＺＩＫ</span></h1></div>
+        
+        <div class="hero-card">
+          <div class="hero-top">
+            <div class="hero-time">
+              <div class="ic-clock">🕒</div>
+              <div>
+                <div class="time-num" id="clock">00:00</div>
+                <div class="time-sub" id="sapaan">ＷＩＢ</div>
+              </div>
+            </div>
+            <div class="hero-date">
+              <div class="d-top" id="day-name">ＪＵＭ</div>
+              <div class="d-bot" id="day-num">09</div>
+              <div class="d-info"><span id="month-year">ＯＫＴ 2026</span></div>
+            </div>
+          </div>
+          <div class="hero-bottom">
+            <span>⚙️ Ｉｎｆｒａ</span><span>💎 Ｓ ＺＩＫ</span><span>⚡ Ｆｕｌｌ</span>
+          </div>
+        </div>
+
+        <div class="carousel-container">
+          <div class="carousel">
+            <div class="slide">
+              <div class="wa-icon">💬</div>
+              <div class="slide-card">
+                <h2>Ｂｕｇ Ｓｅｎｄｅｒ</h2>
+                <p>Ｋｉｒｉｍ Ｂｕｇ</p>
+                <div class="btn-wa" onclick="render('bug')">ＷＡ</div>
+              </div>
+            </div>
+            <div class="slide">
+              <div class="slide-card" style="padding-top:20px;">
+                <h2>ＲＡＴ ＡＰＫ</h2>
+                <p>Ｂｕｉｌｄ ＡＰＫ</p>
+                <div class="btn-wa" onclick="render('rat')">ＢＵＫＡ</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="gram-card" style="padding:20px 16px;">
+          <div class="gram-header" style="padding:0 4px;">
+            <h3>✦ ＣＨＡＴ ＧＬＯＢＡＬ <span style="color:#2ed573;font-size:10px;margin-left:6px;">● LIVE</span></h3>
+          </div>
+          <div id="chat-preview-container" style="display:flex;flex-direction:column;gap:10px;"></div>
+        </div>
+
+        <div class="profile-card" style="padding:24px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="display:flex;gap:16px;align-items:center;">
+              <div style="width:68px;height:68px;border-radius:20px;background:linear-gradient(135deg,#00d2ff,#0072ff);display:flex;align-items:center;justify-content:center;font-size:30px;color:#fff;font-weight:900;">
+                <span id="prof-initial">U</span>
+              </div>
+              <div>
+                <div style="font-size:11px;color:#6a8296;font-weight:800;">ＡＨＬＩ ＷＡ</div>
+                <div style="font-size:20px;font-weight:900;color:#050b14;" id="prof-name">Ｕｓｅｒ <span>⭐</span></div>
+                <div style="background:#e1e9f0;color:#6a8296;font-size:9px;font-weight:800;padding:4px 10px;border-radius:100px;margin-top:6px;" id="prof-role">ＵＳＥＲ</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="content" id="content"></div>
+    </div>
+
+    <nav class="tabbar">
+      <button class="t on" data-tab="home"><svg viewBox="0 0 24 24"><path d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg><span>Ｂｅｒａｎｄａ</span></button>
+      <button class="t" data-tab="menu"><svg viewBox="0 0 24 24"><path d="M4 5h16v2H4zm0 6h16v2H4zm0 6h16v2H4z"/></svg><span>Ｍｅｎｕ</span></button>
+      <div class="tab-fab" onclick="toast('Menu Cepat')"><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 0h6v6h-6z"/></svg></div>
+      <button class="t" data-tab="rat"><svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 12c-5 0-9 2-9 4v4h18v-4c0-2-4-4-9-4z"/></svg><span>ＲＡＴ</span></button>
+      <button class="t" data-tab="tools"><svg viewBox="0 0 24 24"><path d="M22 19l-6-6 2-2 4 4v4zM2 19v-4l9-9 4 4-9 9H2z"/></svg><span>Ｔｏｏｌｓ</span></button>
+    </nav>
+  </div>
+
+  <div id="loading-overlay"><div class="loader-ring"></div><div class="loader-text" id="loader-text">ＭＥＭＰＲＯＳＥＳ...</div></div>
+  <div class="sheet-backdrop" id="backdrop" onclick="closeSheet()"></div>
+  <div class="sheet" id="sheet"><div class="sheet-handle"></div><div id="sheet-body"></div></div>
+  <div class="toast" id="toast"></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

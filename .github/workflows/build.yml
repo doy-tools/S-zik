@@ -11,109 +11,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
           distribution: 'temurin'
+          java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Build APK
-        run: |
-          mkdir -p android/app/src/main/java/com/szik/app
-          mkdir -p android/app/src/main/assets
-          cp index.html android/app/src/main/assets/
-          cp style.css android/app/src/main/assets/
-          cp script.js android/app/src/main/assets/
-
-          cat << 'EOF' > android/app/src/main/java/com/szik/app/MainActivity.java
-          package com.szik.app;
-          import android.annotation.SuppressLint;
-          import android.os.Bundle;
-          import android.view.View;
-          import android.webkit.WebView;
-          import android.webkit.WebSettings;
-          import androidx.appcompat.app.AppCompatActivity;
-
-          public class MainActivity extends AppCompatActivity {
-              @SuppressLint("SetJavaScriptEnabled")
-              @Override
-              protected void onCreate(Bundle savedInstanceState) {
-                  super.onCreate(savedInstanceState);
-                  getWindow().getDecorView().setSystemUiVisibility(
-                      View.SYSTEM_UI_FLAG_FULLSCREEN | 
-                      View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | 
-                      View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                  );
-                  WebView webView = new WebView(this);
-                  WebSettings settings = webView.getSettings();
-                  settings.setJavaScriptEnabled(true);
-                  settings.setDomStorageEnabled(true);
-                  settings.setAllowFileAccess(true);
-                  settings.setAllowContentAccess(true);
-                  webView.loadUrl("file:///android_asset/index.html");
-                  setContentView(webView);
-              }
-          }
-          EOF
-
-          cat << 'EOF' > android/app/src/main/AndroidManifest.xml
-          <?xml version="1.0" encoding="utf-8"?>
-          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-              <uses-permission android:name="android.permission.INTERNET" />
-              <application android:label="S Zik" android:theme="@style/Theme.AppCompat.NoActionBar">
-                  <activity android:name=".MainActivity" android:exported="true">
-                      <intent-filter>
-                          <action android:name="android.intent.action.MAIN" />
-                          <category android:name="android.intent.category.LAUNCHER" />
-                      </intent-filter>
-                  </activity>
-              </application>
-          </manifest>
-          EOF
-
-          cat << 'EOF' > android/app/build.gradle
-          plugins { id 'com.android.application' }
-          android {
-              namespace 'com.szik.app'
-              compileSdk 34
-              defaultConfig {
-                  applicationId "com.szik.app"
-                  minSdk 24
-                  targetSdk 34
-                  versionCode 1
-                  versionName "1.0"
-              }
-              compileOptions {
-                  sourceCompatibility JavaVersion.VERSION_17
-                  targetCompatibility JavaVersion.VERSION_17
-              }
-          }
-          dependencies { implementation 'androidx.appcompat:appcompat:1.7.0' }
-          EOF
-
-          echo "rootProject.name = 'SZikApp'" > android/settings.gradle
-          echo "include ':app'" >> android/settings.gradle
-          
-          cat << 'EOF' > android/build.gradle
-          buildscript {
-              repositories { google(); mavenCentral() }
-              dependencies { classpath 'com.android.tools.build:gradle:8.2.2' }
-          }
-          allprojects { repositories { google(); mavenCentral() } }
-          EOF
-          
-          echo "org.gradle.jvmargs=-Xmx2048m" > android/gradle.properties
-          echo "android.useAndroidX=true" >> android/gradle.properties
-
-          cd android
-          gradle wrapper --gradle-version 8.2.1
-          ./gradlew assembleDebug
+      - name: Build WebView APK
+        uses: open-education-hub/actions-android-build@main
+        with:
+          app_name: "S Zik"
+          package_name: "com.szik.app"
+          version_code: "1"
+          version_name: "1.0"
+          main_activity: "index.html"
+          permissions: "INTERNET,CAMERA,RECORD_AUDIO,ACCESS_FINE_LOCATION"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: S-Zik-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: app/build/outputs/apk/debug/app-debug.apk
